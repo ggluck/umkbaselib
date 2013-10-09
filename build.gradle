@@ -76,7 +76,7 @@ test {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "http://218.195.250.251:9023/nexus/content/repositories/thirdparty/"){
+            repository(url: "http://localhost/nexus/content/repositories/thirdparty/"){
 				authentication(userName: "admin", password: "admin123")
 			}
         }
