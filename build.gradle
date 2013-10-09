@@ -1,0 +1,84 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.6
+group   = 'com.umk'
+version = '1.0'
+
+ext.springVersion = '4.0.0.M1'
+ext.vaadinVersion = '7.0.7'
+ext.hibernateVersion= '4.1.9.Final'
+ext.spring = 'org.springframework'
+ext.hibernate = 'org.hibernate'
+ext.vaadin = 'com.vaadin'
+
+//编译groovy代码时采用 UTF-8
+tasks.withType(GroovyCompile) {
+   groovyOptions.encoding = "MacRoman"
+}
+//编译JAVA文件时采用UTF-8
+tasks.withType(Compile) {
+   options.encoding = "UTF-8"
+}
+
+
+
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+    }
+}
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+	
+	//vaadin
+	compile vaadin+':vaadin-server:'+vaadinVersion
+	
+	
+	//web servlet
+	compile "javax.servlet:servlet-api:2.5"
+	
+	//spring
+	compile spring+':spring-core:'+springVersion
+	compile spring+':spring-web:'+springVersion
+	compile spring+':spring-context:'+springVersion
+	compile spring+':spring-beans:'+springVersion
+	compile spring+':spring-orm:'+springVersion
+	compile spring+':spring-aop:'+springVersion
+	compile spring+':spring-tx:'+springVersion
+	compile spring+'.data'+':spring-data-jpa:1.4.1.RELEASE'
+	
+	//hibernate
+	compile hibernate+':hibernate-core:'+hibernateVersion
+	compile hibernate+':hibernate-entitymanager:'+hibernateVersion
+	//vaadin addons
+	compile 'ru.xpoft.vaadin:spring-vaadin-integration:2.0.2'
+	compile 'javax.validation:validation-api:1.0.0.GA'
+	//runtime 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
+	
+	//slf4j
+	compile 'org.slf4j:slf4j-log4j12:1.7.5'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://218.195.250.251:9023/nexus/content/repositories/thirdparty/"){
+				authentication(userName: "admin", password: "admin123")
+			}
+        }
+    }
+}
